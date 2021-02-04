@@ -1,0 +1,158 @@
+<html>
+    <html>
+        <head>
+            <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+           
+           <!-- Latest compiled and minified CSS -->
+           <link rel="stylesheet"    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+           <!-- jQuery library -->
+           <script    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+        </script>
+        <!-- Latest compiled JavaScript -->
+        <script    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
+        </script>
+        </head>
+        <body>
+        
+<h1>helll welcome home hasni</h1>
+
+<label for="">Show Results</label>
+<select name="psize" id="psize">
+    <option value="2">2</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="20">20</option>
+</select>
+<span>of <%=len%></span>
+<table id="example" class="table  table-striped display nowrap" style="width:100%">
+    <thead> 
+           <tr>
+        <td>user id</td>
+        <td>user name</td>
+        <td>company</td>
+        <td>Action</td>
+        <td>Action</td>
+      
+    </tr>
+</thead>
+<tbody id="tb">
+
+    <% hasnain.results.forEach(element => {%>
+        <tr>
+  
+        <td><%=element.bookid%> </td>  
+        <td><%=element.author%></td>
+        <td><%=element.title%></td>
+        <td><button>delete</button></td>
+        <td><button>Add book</button></td>
+    </tr>
+    <% }); %>
+</tbody>
+</table>
+
+<div id="info"></div>
+<!-- <%=hasnain.previous%> -->
+
+<div class="text-center">
+   
+   
+        <%if(hasnain.previous ){%>
+            <a href="/users?page=<%=hasnain.previous.page%>&limit=2">Prev</a>
+            <%}%>
+            <!-- <%=hasnain.next%> -->
+            
+            <%if(hasnain.next){%>
+            <a href="/users?page=<%=hasnain.next.page%>&limit=2">Next</a>
+            
+
+    <%}%>
+    
+   
+        
+
+</div>
+             
+<script type="text/javascript">
+    $("#psize")
+            .change(
+                    function() {
+                        var contentToRemove = document.querySelectorAll("#div1");     
+                        $(contentToRemove).remove();
+                        var contentToRemoveinfo = document.querySelectorAll("#tb");     
+                        $(contentToRemoveinfo).empty();
+                        var contentToRemoveinfo = document.querySelectorAll("#info");     
+                        $(contentToRemoveinfo).empty();
+                        alert("button pressed");
+                        alert($("#psize").val());
+
+                        var per=$("h3").text();
+                        var size = $("#psize").val();
+                        var url1 = `http://localhost:3000/selecteditems?page=1&limit=${size}`;
+                        alert(url1)
+                        
+                        $.ajax({
+                            type : "get",
+                            url : url1,
+                            success : function(data) {
+                                alert(data)
+                                console.log("data received" + data);
+                                var list = JSON.stringify(data);
+
+
+                                alert(list);
+                                console.log(list);
+
+
+
+                                //alert(f_name);
+                                console.log("list" + list)
+                                //alert("daaaata"+data);
+                                //  alert("in list"+list);
+
+                                $.each(data.results, function(index, value) {
+                                    
+                                    $("#tb").append(
+                                        
+                                            "<tr id='div1'>" + "<td>"
+                                                    + data.results[index].bookid
+                                                    + " </td>" + "<td>"
+                                                    +  data.results[index].author
+                                                    + " </td>" + "<td>"
+                                                    + data.results[index].title
+                                                    + " </td>" 
+                                                    + "</tr>");
+                                })
+
+                                $("#info").append(
+                                    (data.previous ? `<a href='/users?page=${data.previous.page}&limit=${data.previous.limit}'>'+'previous'+'</a>`: ``)
+                                    +
+                                    (data.next  ? `<a href='/users?page=${data.next.page}&limit=${data.next.limit}'>next</a>`: ``)
+
+                                )
+
+
+                            },
+                            error : function() {
+                                alert('Error while request..');
+                            }
+                        })
+
+
+
+                    })
+        
+
+
+
+        $("a.drum").click(function() {
+              alert( "Handler for .click() called." );
+        });
+        </script>
+        </body>
+        
+</html>
+
+
+
+
+
